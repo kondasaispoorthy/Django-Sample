@@ -4,12 +4,13 @@ from .models import Students
 from .serializers import StudentsSerializer
 from rest_framework.decorators import api_view
 from rest_framework.response import Response
+from rest_framework import status
 from django.shortcuts import get_object_or_404
 
 # Create your views here.
 @api_view(['GET'])
 def StudentList(request):
-    list = Students.objects.all()
+    list = Students.objects.all().order_by('id')
     serializer = StudentsSerializer(list,many=True)
     return Response(serializer.data)
 @api_view(['GET'])
@@ -24,6 +25,7 @@ def StudentCreate(request):
     if  serializer.is_valid():
         serializer.save()
     return Response(serializer.data)
+
 @api_view(['PUT'])
 def StudentUpdate(request,pk):
     #list = Students.objects.get(id=pk)
